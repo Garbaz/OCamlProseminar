@@ -1,4 +1,0 @@
-(lang dune 3.1)
-(name demo)
-(sections (lib .) (bin ../../bin) (doc ../../doc/demo))
-(files (lib (META dune-package opam)) (bin (demo)) (doc (README)))

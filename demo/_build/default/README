@@ -1,4 +1,0 @@
-vim bin/main.ml
-dune build --profile release
-./_build/default/bin/main.exe
-nc 127.0.0.1 1729
