@@ -1,0 +1,12 @@
+{
+    "markdown.marp.themes": [
+        "./theme.css"
+    ],
+    "spellright.language": [
+        "English (British)"
+    ],
+    "spellright.documentTypes": [
+        "latex",
+        "plaintext"
+    ]
+}

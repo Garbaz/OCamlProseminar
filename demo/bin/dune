@@ -1,0 +1,6 @@
+(executable
+ (public_name demo)
+ (name main)
+ (libraries core async)
+ (preprocess
+  (pps ppx_let)))
