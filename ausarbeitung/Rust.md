@@ -43,9 +43,9 @@ fn bar() -> impl Future<Output = u8> {
 
 The code inside the async function, closure or code block will become the computation that is to be done to further the computation of the Future it compiles to, wherein any `await` will become a point from which computation will be resumed when the asynchronous task that is being awaited concludes. For this, any data necessary to continue further computation will be stored in the implicitly generated struct that represents our Future.
 
-This combination of `async` and `await` allows us write and compose asynchronous functions, closures and code blocks in simple and general, runtime-independent manner.
+This combination of `async` and `await` allows us write and compose asynchronous functions, closures and code blocks in a simple and general, runtime-independent manner.
 
-**((Define exactly what `async` and `await` do in hard technical terms or even code))**
+**((Define exactly what `async` and `await` do in hard technical terms and/or code))**
 
 ### Join
 
@@ -62,7 +62,7 @@ async fn in_sequence() {
 }
 ```
 
-To remedy this, the Rust standard library provides a macro for joining up multiple Futures, such that they are polled together when awaited.
+To remedy this, the Rust standard library provides a macro for joining up multiple Futures, such that they are all polled together when awaited.
 
 ```rust
 async fn one() -> usize { 1 }

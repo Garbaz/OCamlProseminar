@@ -3,10 +3,11 @@
         "./theme.css"
     ],
     "spellright.language": [
-        "English (British)"
+        "English (American)"
     ],
     "spellright.documentTypes": [
         "latex",
-        "plaintext"
+        "plaintext",
+        "markdown"
     ]
 }
