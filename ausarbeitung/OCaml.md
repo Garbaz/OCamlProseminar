@@ -55,3 +55,4 @@ let bind d ~f =
 
 ## Lwt
 
+Similarly to Jane Street's Async, the Lwt library uses a monadic data type `Lwt.t`, called Promise, to represent the result of asynchronous computation. And while Lwt by default also uses a system of non-preemptive user-level threads, it provides further 

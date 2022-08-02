@@ -14,15 +14,15 @@ pub trait Future {
 
 Provided as a trait by the Rust standard library, a _Future_ represents an asynchronous computation that either is done, providing a final result value of the computation, or is still pending, needing to make further progress.
 
-To invoke progress to be made on a Future, it has to be _polled_, which can either result in the Future completing it's computation, returning the final value, or in the Future suspending it's computation, registering a wakeup function that is passed in via the calling context (`cx`) to be called once the Future is ready to be polled again for further progress.
+To invoke progress to be made on a Future, it has to be _polled_, which can either result in the Future completing it's computation, returning the final value, or in the Future suspending it's computation, ensuring by some way for the wakeup function that is passed in via the calling context (`cx`) to be called once the Future is ready to be polled again for further progress.
 
-Any `struct` implementing Future therefore has to define in it's `poll` both what computation in to be done to further it's progress in computing it's final value, and, if not complete, by what means the wakeup callback is to be called back to signify to the runtime that the Future can be polled again.
+Any `struct` implementing Future therefore has to define in it's `poll` both what computation is to be done to further it's progress in computing it's final value, and, if not complete, by what means the wakeup callback is to be called back to signify to the runtime that the Future can be polled again.
 
-When and how any Future is polled is not defined by the Rust standard library, but instead rather can be handled by different external runtimes.
+When and how any Future is polled is not defined by the Rust compiler or standard library, but instead rather can be handled differently by different external runtimes.
 
 ## Syntax
 
-To simply declaration and synchronization of asynchronous tasks, the Rust compiler, since the 2018 edition, provides some built-in syntax.
+To simplify declaration and composition of asynchronous tasks, the Rust compiler, since the 2018 edition, provides some built-in syntax for handling Futures.
 
 ### Async & Await
 
@@ -76,8 +76,56 @@ async fn in_sequence() {
 
 ## Runtime
 
-The Rust standard library does not provide an async runtime, meaning that while we can readily declare and compose async functions, we can not actually execute any asynchronous code without the use of an external library.
+The Rust standard library does not provide an async runtime, meaning that while we can readily declare and compose async functions, we can not actually execute any asynchronous code without the use of an external runtime. Neither does the standard library provide asynchronous versions of IO/network/file/&c utilities. Instead, other than the basic interface described above of `Future`, `async` and `await`, all further asynchronous functionality is implemented by external libraries. Of these, Tokio is by far the most popular, and commonly considered the default choice for the majority of use cases.
 
 ### Tokio
 
-...
+The primary runtime provided by Tokio utilizes a fixed sized pool of system-threads, usually aligned with the number of CPU cores available. To each such thread, called a Processor, asynchronous Tasks are non-preemptively scheduled to be executed. Alternatively, a single-threaded runtime is provided that uses only the currently running thread directly.
+
+To minimize necessary synchronization between Processors, instead of having one queue of Tasks from which all Processors take, each Processor has it's own dedicated queue of Tasks. When a Task spawns further Tasks, they are simply pushed onto the queue of the Processor which runs the Task. When a Processor runs out of tasks, it will attempt to steal Tasks from the queues of other Processors. When a Processor's queue becomes unproportionally full, idle Processors are woken up to steal some of it's load. This way, synchronization between Processors is minimized during normal operation under high load, while minimizing the impact on performance of an non-uniform distribution of load across Processors.
+
+In parallel to the fixed size pool of threads used for most asynchronous operations, Tokio provides a second pool threads of variable but bound size for blocking or slow operations. This is necessary due to the non-preemptive scheduling of the primary pool of Processors. If a Task running on the primary pool takes too much time without yielding execution, other Tasks ready for execution will have to wait, impacting overall performance. This separation allows for the primary Processor pool to be optimized for fast switching of quickly yielding Tasks, while at the same time being able to cleanly interoperate with blocking or slow operations.
+
+In addition to the runtime, Tokio also provides a suite of asynchronous IO, networking and file-system operations that mirror the synchronous versions provided by the Rust standard library.
+
+### Usage
+
+The following implements a basic web server that asynchronously handles incoming connections.
+
+```rust
+use tokio::net::{TcpListener, TcpStream};
+use std::io;
+
+async fn process(socket: TcpStream) {
+    // ...
+}
+
+#[tokio::main]
+async fn main() -> io::Result<()> {
+    let listener = TcpListener::bind("127.0.0.1:8080").await?;
+
+    loop {
+        let (socket, _) = listener.accept().await?;
+
+        tokio::spawn(
+            async move {
+            // Process each socket concurrently.
+            process(socket).await
+        });
+    }
+}
+```
+
+With the asynchronous version of `TcpListener` provided by Tokio, the program waits asynchronously for incoming connections and spawns a new asynchronous task for each connected client without blocking the main task.
+
+Notably, the `#[tokio::main]` attribute makes it such that when the `main` function is called (i.e. at the start of the program), a Tokio runtime is created and started, without requiring so to be done manually.
+
+
+
+
+## Links
+
+- https://kerkour.com/rust-async-await-what-is-a-runtime
+- https://tokio.rs/blog/2019-10-scheduler
+- https://smb374.github.io/an-adventure-in-rust-s-async-runtime-model.html
+- 
