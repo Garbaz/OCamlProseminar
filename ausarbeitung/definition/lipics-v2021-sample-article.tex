@@ -1,0 +1,150 @@
+\documentclass[a4paper,UKenglish,cleveref, autoref, thm-restate]{lipics-v2021}
+%This is a template for producing LIPIcs articles. 
+%See lipics-v2021-authors-guidelines.pdf for further information.
+%for A4 paper format use option "a4paper", for US-letter use option "letterpaper"
+%for british hyphenation rules use option "UKenglish", for american hyphenation rules use option "USenglish"
+%for section-numbered lemmas etc., use "numberwithinsect"
+%for enabling cleveref support, use "cleveref"
+%for enabling autoref support, use "autoref"
+%for anonymousing the authors (e.g. for double-blind review), add "anonymous"
+%for enabling thm-restate support, use "thm-restate"
+%for enabling a two-column layout for the author/affilation part (only applicable for > 6 authors), use "authorcolumns"
+%for producing a PDF according the PDF/A standard, add "pdfa"
+
+%\pdfoutput=1 %uncomment to ensure pdflatex processing (mandatatory e.g. to submit to arXiv)
+\hideLIPIcs  %uncomment to remove references to LIPIcs series (logo, DOI, ...), e.g. when preparing a pre-final version to be uploaded to arXiv or another public repository
+
+%\graphicspath{{./graphics/}}%helpful if your graphic files are in another directory
+
+\bibliographystyle{plainurl}% the mandatory bibstyle
+
+\title{Definition of Event Reordering and Data-races}
+
+%\titlerunning{Dummy short title} %TODO optional, please use if title is longer than one line
+
+\author{Tobias Hoffmann}{Albert-Ludwigs-Universität Freiburg, Germany}{garbaz@t-online.de}{}{}
+
+\authorrunning{T. Hoffmann} %TODO mandatory. First: Use abbreviated first/middle names. Second (only in severe cases): Use first author plus 'et al.'
+
+\Copyright{Tobias Hoffmann} %TODO mandatory, please use full first names. LIPIcs license is "CC-BY";  http://creativecommons.org/licenses/by/3.0/
+
+\begin{CCSXML}
+<ccs2012>
+    <concept>
+        <concept_id>10003752.10003753.10003761.10003762</concept_id>
+        <concept_desc>Theory of computation~Parallel computing models</concept_desc>
+        <concept_significance>500</concept_significance>
+    </concept>
+</ccs2012>
+\end{CCSXML}
+    
+\ccsdesc[500]{Theory of computation~Parallel computing models}
+
+\keywords{threads, data race} %TODO mandatory; please add comma-separated list of keywords
+
+\category{} %optional, e.g. invited paper
+
+\relatedversion{} %optional, e.g. full version hosted on arXiv, HAL, or other respository/website
+%\relatedversiondetails[linktext={opt. text shown instead of the URL}, cite=DBLP:books/mk/GrayR93]{Classification (e.g. Full Version, Extended Version, Previous Version}{URL to related version} %linktext and cite are optional
+
+%\supplement{}%optional, e.g. related research data, source code, ... hosted on a repository like zenodo, figshare, GitHub, ...
+%\supplementdetails[linktext={opt. text shown instead of the URL}, cite=DBLP:books/mk/GrayR93, subcategory={Description, Subcategory}, swhid={Software Heritage Identifier}]{General Classification (e.g. Software, Dataset, Model, ...)}{URL to related version} %linktext, cite, and subcategory are optional
+
+%\funding{(Optional) general funding statement \dots}%optional, to capture a funding statement, which applies to all authors. Please enter author specific funding statements as fifth argument of the \author macro.
+
+\acknowledgements{}%optional
+
+\nolinenumbers %uncomment to disable line numbering
+
+
+
+%Editor-only macros:: begin (do not touch as author)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \EventEditors{John Q. Open and Joan R. Access}
+% \EventNoEds{2}
+% \EventLongTitle{42nd Conference on Very Important Topics (CVIT 2016)}
+% \EventShortTitle{CVIT 2016}
+% \EventAcronym{CVIT}
+% \EventYear{2016}
+% \EventDate{December 24--27, 2016}
+% \EventLocation{Little Whinging, United Kingdom}
+% \EventLogo{}
+% \SeriesVolume{42}
+% \ArticleNo{0}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+%TODO mandatory: add short abstract of the document
+% \begin{abstract}
+%     TODO: Abstract
+% \end{abstract}
+
+\section{Definition}
+\label{sec:definition}
+
+\paragraph*{Program \& Threads}
+A \textit{concurrent program} $P$ consists of a set of \textit{threads} $T = \left\{ t_1, ..., t_n \right\}$.
+
+\paragraph*{Action \& Event}
+
+An \textit{event} $e = (i, a)$ is any \textit{action} $a$ performed by a thread $t_i$ which potentially influences or is influenced by the execution of other threads. An action can be:
+
+\begin{itemize}
+    \item $read(x)$ : Read from variable $x$
+    \item $write(x)$ : Write to variable $x$
+    \item $lock(l)$ : Acquire lock $l$
+    \item $unlock(l)$ : Release lock $l$
+    \item $fork(j)$ : Create child thread $t_j$
+    \item $join(j)$ : Await child thread $t_j$ to terminate
+\end{itemize}
+
+Hereby is $x$ the identifier of a \textit{global variable}, $l$ the identifier of a \textit{lock} and $j$ is the index of a \textit{child thread} $t_j$.
+
+\paragraph*{Trace of a program}
+
+The \textit{trace} $\sigma = \left\{ e_1 , e_2 , ..., e_m \right\}$ of a program $P$ is the temporally ordered sequence of events of the threads $T$ in $P$ for a potential execution of $P$.
+
+\paragraph*{Last-Write of a Read Action}
+
+For a read event $e = (i, read(x))$, we define the \textit{last-write} of $e$ as the last event $e' = (j, write(x))$ that wrote to $x$ before $e$ by any thread. We write $lastwrite(e) := e'$.
+
+\paragraph*{Reordering \& Happens-Before Relation}
+
+The relation \textit{happens-before} between any two events $e=(i, a)$ and $e'=(j, a')$, written $e \prec e'$, is defined if any of the following conditions are met:
+
+\begin{itemize}
+    \item $i = j$ and $a$ happens before $a'$ in $t_i$
+    \item $a = fork(j)$
+    \item $a' = join(i)$
+    \item $i \neq j$ and $a = unlock(l)$ and $a' = lock(l)$
+\end{itemize}
+
+
+A \textit{valid reordering} $r : \left\{1,...,m\right\} \rightarrow \left\{1,...,m\right\}$ of the trace $\sigma = \left\{e_1, ..., e_m\right\}$ of a program $P$ is a bijective function that preserves the \textit{happens-before} relation between all events:
+
+$$
+    \forall k \in \left\{1,...,m\right\} \forall l \in \left\{1,...,m\right\}: e_k \prec e_l \Rightarrow e_{r(k)} \prec e_{r(l)}
+$$
+
+\paragraph*{Data Race}
+
+A \textit{data race} exists for a read event $e_k = (i, read(x))$ if there is a valid reordering $r$ of the program's trace $\sigma = \left\{e_1, ..., e_m\right\}$ that changes the last-read of it:
+
+$$
+    lastread(e_k) \neq lastread(e_{r(k)})
+$$
+
+
+%%
+%% Bibliography
+%%
+
+%% Please use bibtex, 
+
+% \bibliography{lipics-v2021-sample-article}
+
+% \appendix
+
+\end{document}

@@ -17,7 +17,7 @@ An _event_ $e = (i, a)$ is any _action_ $a$ performed by a thread $t_i$ which po
 - $fork(j)$ : Create child thread $t_j$
 - $join(j)$ : Await child thread $t_j$ to terminate
 
-Hereby is $x$ the identifier of a _global variable_, $l$ the identifier of a _lock_ and $j$ is the index of a child thread $t_j$.
+Hereby is $x$ the identifier of a _global variable_, $l$ the identifier of a _lock_ and $j$ is the index of a _child thread_ $t_j$.
 
 ### Trace of a program
 
@@ -25,7 +25,7 @@ The _trace_ $\sigma = \left\{ e_1 , e_2 , ..., e_m \right\}$ of a program $P$ is
 
 ### Last-Write of a Read Action
 
-For a read event $e = (i, read(x))$, we define the _last-write_ of $e$ as the last event $e' = (j, write(x))$ that wrote to $x$ before $e$ by any thread. We write $lastwrite(a) = a'$.
+For a read event $e = (i, read(x))$, we define the _last-write_ of $e$ as the last event $e' = (j, write(x))$ that wrote to $x$ before $e$ by any thread. We write $lastwrite(e) := e'$.
 
 ### Reordering & Happens-Before Relation
 
@@ -50,7 +50,7 @@ $$
 lastread(e_k) \neq lastread(e_{r(k)})
 $$
 
-## Sources
+## References
 
-1. <https://link.springer.com/content/pdf/10.1007/978-3-642-14295-6_39.pdf>
-2. <https://dl.acm.org/doi/pdf/10.1145/359545.359563>
+- <https://link.springer.com/content/pdf/10.1007/978-3-642-14295-6_39.pdf>
+- <https://dl.acm.org/doi/pdf/10.1145/359545.359563>

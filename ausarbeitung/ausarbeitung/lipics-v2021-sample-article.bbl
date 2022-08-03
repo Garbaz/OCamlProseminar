@@ -1,0 +1,50 @@
+\begin{thebibliography}{1}
+
+\bibitem{asyncRus3:online}
+async - rust.
+\newblock \url{https://doc.rust-lang.org/std/keyword.async.html}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{TheAsync92:online}
+The async ecosystem - asynchronous programming in rust.
+\newblock
+  \url{https://rust-lang.github.io/async-book/08_ecosystem/00_chapter.html}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{AsyncRus83:online}
+Async rust: What is a runtime? here is how tokio works under the hood.
+\newblock \url{https://kerkour.com/rust-async-await-what-is-a-runtime}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{Awaitexp35:online}
+Await expressions - the rust reference.
+\newblock
+  \url{https://doc.rust-lang.org/reference/expressions/await-expr.html}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{Concurre6:online}
+Concurrent programming with async - real world ocaml.
+\newblock \url{https://dev.realworldocaml.org/concurrent-programming.html}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{maininto61:online}
+main in tokio - rust.
+\newblock \url{https://docs.rs/tokio/latest/tokio/attr.main.html}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{Makingth23:online}
+Making the tokio scheduler 10x faster | tokio - an asynchronous rust runtime.
+\newblock \url{https://tokio.rs/blog/2019-10-scheduler}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{spawnint88:online}
+spawn in tokio - rust.
+\newblock \url{https://docs.rs/tokio/latest/tokio/fn.spawn.html}.
+\newblock (Accessed on 08/03/2022).
+
+\bibitem{tokioexe87:online}
+tokio::executor - rust.
+\newblock \url{hhttps://docs.rs/tokio/latest/tokio/runtime/index.html}.
+\newblock (Accessed on 08/03/2022).
+
+\end{thebibliography}
