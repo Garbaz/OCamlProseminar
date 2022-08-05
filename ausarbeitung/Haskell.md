@@ -1,6 +1,10 @@
 # Haskell
 
-
+(( TODO: 
+        - Add references
+        - Write intro text here
+        - Execution model of concurrent haskell
+))
 
 
 
@@ -34,10 +38,11 @@ This will print an arbitrary mix of 0s and 1s to the output, with no determined 
 While `forkIO` allows to spawn a child thread to do IO actions on it's own, once forked, there is no way for the parent thread and child thread to communicate, neither can any two child thread communicate with each other. This is remedied by the introduction of `data MVar a`, a possibly empty mutable location that is safely synchronized between threads. An `MVar` is created with `newEmptyMVar :: IO (MVar a) ` or `newMVar :: a -> IO (MVar a)`, can be written to with `putMVar :: MVar a -> a -> IO ()` and read from with `takeMVar :: MVar a -> IO a`. These latter two operations each block, `putMVar` waiting for the `MVar` to become empty, before writing to it, leaving it full, and `takeMVar` waiting for the `MVar` to become filled before reading it, leaving it empty. E.g.:
 
 ```haskell
-do v <- newEmptyMVar
-   forkIO (threadDelay 1000000 >> putMVar v "momentous result")
-   m <- takeMVar v
-   print m
+do
+  v <- newEmptyMVar
+  forkIO (threadDelay 1000000 >> putMVar v "momentous result")
+  m <- takeMVar v
+  print m
 ```
 
 This will cause the parent thread to wait for the child thread to fill `v`, before printing the result that has been handed back to it.
@@ -46,9 +51,9 @@ This will cause the parent thread to wait for the child thread to fill `v`, befo
 
 While `forkIO` provides a very general way for concurrent execution in Haskell, it has, as perhaps noticeable above, three properties that we would like to abstract over for asynchronous computation.
 
-The first being, that the IO action we are forking does not have any result, the argument to `forkIO` being of type `IO ()`. Instead, to hand back a possible result to our parent thread, we have to manually create an `MVar` in the parent thread and capture it in the forked IO action for the child to be able to hand a result back. 
+The first being, that the IO action we are forking does not have any result, the argument to `forkIO` being of type `IO ()`. Instead, to hand back a possible result to our parent thread, we have to manually create an `MVar` in the parent thread and capture it in the forked IO action for the child to be able to hand back a result. 
 
-The second being that the child thread can silently crash with an exception, and leave our parent thread running none the wiser.
+The second being that the child thread can silently crash with an exception and leave our parent thread running none the wiser.
 
 And the third being that, once spawned, our child thread might run indefinitely, even after our parent thread is gone, since it's execution becomes entirely independent of the parent.
 
@@ -62,17 +67,43 @@ do
   a2 <- async (getURL url2)
   page1 <- wait a1
   page2 <- wait a2
+  print page1
+  print page2
 ```
 
-This means that we have fulfilled both the first and second wish above. However, if used in this style, the third issue is still standing, any child threads will keep running, even if the parent thread dies. This usually is not wanted. Therefore, the function `withAsync :: IO a -> (Async a -> IO b) -> IO b` is provided, which will asynchronously run the given IO action and hand the resulting `Async` into the given function, while also keeping track of the child thread that has been forked off, and killing it when the function returns or throws an exception, ensuring that no orphaned child thread is left running. E.g.:
+Notably, the child thread executing the IO action handed to `async` will be started right away, and not just when awaited. Therefore, waiting first for `a1` and then `a2`, contrary to e.g. `await` in Rust, does not result in the execution of the second asynchronous operation to be delayed until the first concludes, but rather they will be truly executed concurrently, even when awaited sequentially.
+
+Unfortunately this also means that, while we have fulfilled both the first and second wish above, if used in this style, the third issue is still standing; Any child threads will keep running, even if the parent thread dies, since the execution of the child thread does not depend on the parent thread to be waiting for it. This usually is unwanted. Therefore, the function `withAsync :: IO a -> (Async a -> IO b) -> IO b` is provided, which will asynchronously run the given IO action and hand the `Async` into the given function, while also keeping track of the child thread that has been forked off, and killing it when this function returns or throws an exception, ensuring that no orphaned child thread is left running. E.g.:
 
 ```haskell
 withAsync (getURL url1) $ \a1 -> do
   withAsync (getURL url2) $ \a2 -> do
     page1 <- wait a1
     page2 <- wait a2
+    print page1
+    print page2
 ```
 
+Abstracting again over `withAsync`, a few high-level utilities are provided, like `concurrently :: IO a -> IO b -> IO (a, b)` or `race :: IO a -> IO b -> IO (Either a b)`. Using `concurrently`, the above example can be rewritten as:
+
+```haskell
+do
+  (page1, page2) <- concurrently (getURL url1) (getURL url2)
+  print page1
+  print page2
+```
+
+`race` provides the possibility not to wait for both of two asynchronous operations to conclude, but rather to wait for either to conclude and the other to subsequently be canceled. E.g.:
+
+```haskell
+do
+  r <- race (getURL url1) (getURL url2)
+  case r of
+    Left page -> print page
+    Right page -> print page
+```
+
+Here we will end up printing whichever page is retrieved faster.
 
 
 
