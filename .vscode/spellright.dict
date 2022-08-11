@@ -8,3 +8,5 @@ neq
 rarr
 forall
 lastread
+GHC
+SMP

@@ -1,15 +1,5 @@
 # Haskell
 
-(( TODO: 
-        - Add references
-        - Write intro text here
-        - Execution model of concurrent haskell
-))
-
-
-
-## IO 
-
 All side-effecting computation in Haskell are represented via the monad `type IO a = World -> (a, World)`, where `World` stands for a theoretical type that represents the entirety of the persistent outside world to our program. A value of this monad therefore stands for an action that transforms the current state of the world in some way (e.g. write to a file) and produces some internal result of type `a` (e.g. the result of reading a file). These actions can be sequentially composed with the monad operators `>>= :: IO a -> (a -> IO b) -> IO b` and the `>> :: IO a -> IO b -> IO b`.
 
 For an action represented by the IO monad (which might consist of any number of chained together actions) to be actually executed and the side-effects they represent to occur, we assign this action to the special label `main :: IO ()`. E.g.:
@@ -105,10 +95,16 @@ do
 
 Here we will end up printing whichever page is retrieved faster.
 
+## Runtime
 
+The concurrency model of Haskell is entirely abstract and does not specify in any manner how the parallel execution of it's threads is facilitated at runtime. It is therefore up to the design of the compiler how concurrency is implemented.
+
+In the Glasgow Haskell Compiler (GHC), concurrent threads are represented by as system of internal lightweight threads which are preemptively scheduled by a custom scheduler. By default, this occurs entirely on one system thread, but an option is provided for utilizing multiple CPU cores via SMP parallelism.
 
 ## References
 
 - https://www.microsoft.com/en-us/research/wp-content/uploads/2016/07/mark.pdf
 - https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.47.7494&rep=rep1&type=pdf
 - https://hackage.haskell.org/package/async-2.2.4/docs/Control-Concurrent-Async.html
+- https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/using-concurrent.html
+- https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/rts/scheduler

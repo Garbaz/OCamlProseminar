@@ -1,4 +1,10 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{54UsingC70:online}
+5.4. using concurrent haskell — glasgow haskell compiler 9.2.2 user's guide.
+\newblock
+  \url{https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/using-concurrent.html}.
+\newblock (Accessed on 08/06/2022).
 
 \bibitem{asyncRus3:online}
 async - rust.
@@ -27,6 +33,12 @@ Concurrent programming with async - real world ocaml.
 \newblock \url{https://dev.realworldocaml.org/concurrent-programming.html}.
 \newblock (Accessed on 08/03/2022).
 
+\bibitem{ControlC47:online}
+Control.concurrent.async.
+\newblock
+  \url{https://hackage.haskell.org/package/async-2.2.4/docs/Control-Concurrent-Async.html}.
+\newblock (Accessed on 08/06/2022).
+
 \bibitem{maininto61:online}
 main in tokio - rust.
 \newblock \url{https://docs.rs/tokio/latest/tokio/attr.main.html}.
@@ -37,6 +49,12 @@ Making the tokio scheduler 10x faster | tokio - an asynchronous rust runtime.
 \newblock \url{https://tokio.rs/blog/2019-10-scheduler}.
 \newblock (Accessed on 08/03/2022).
 
+\bibitem{schedule78:online}
+scheduler · wiki · glasgow haskell compiler / ghc · gitlab.
+\newblock
+  \url{https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/rts/scheduler}.
+\newblock (Accessed on 08/06/2022).
+
 \bibitem{spawnint88:online}
 spawn in tokio - rust.
 \newblock \url{https://docs.rs/tokio/latest/tokio/fn.spawn.html}.
@@ -46,5 +64,16 @@ spawn in tokio - rust.
 tokio::executor - rust.
 \newblock \url{hhttps://docs.rs/tokio/latest/tokio/runtime/index.html}.
 \newblock (Accessed on 08/03/2022).
+
+\bibitem{jones2001monadic}
+Simon~Peyton Jones.
+\newblock monadic input/output, concurrency, exceptions, and foreign-language
+  calls in haskell.
+\newblock {\em Engineering theories of software construction}, 180:47, 2001.
+
+\bibitem{jones1996concurrent}
+Simon~Peyton Jones, Andrew Gordon, and Sigbjorn Finne.
+\newblock Concurrent haskell.
+\newblock In {\em POPL}, volume~96, pages 295--308. Citeseer, 1996.
 
 \end{thebibliography}

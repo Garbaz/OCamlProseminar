@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.2)  5 AUG 2022 13:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.2)  6 AUG 2022 15:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -707,15 +707,15 @@ Overfull \hbox (15.00002pt too wide) in paragraph at lines 153--161
 []$[]$ 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [3.3]
+[3.3]
 Overfull \hbox (15.00002pt too wide) in paragraph at lines 198--210
 []$[]$ 
  []
 
-[4.4]
+
+Underfull \vbox (badness 1648) has occurred while \output is active []
+
+ [4.4]
 Overfull \hbox (15.00002pt too wide) in paragraph at lines 219--231
 []$[]$ 
  []
@@ -730,33 +730,98 @@ Overfull \hbox (15.00002pt too wide) in paragraph at lines 264--289
 []$[]$ 
  []
 
-[6.6] (./lipics-v2021-sample-article.bbl
-Underfull \hbox (badness 1231) in paragraph at lines 4--7
+
+Underfull \vbox (badness 1389) has occurred while \output is active []
+
+ [6.6] (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2020/03/24 1.8d listings language file
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstlang2.sty
+File: lstlang2.sty 2020/03/24 1.8d listings language file
+)
+Overfull \hbox (15.00002pt too wide) in paragraph at lines 301--307
+[]$[]$ 
+ []
+
+
+Overfull \hbox (15.00002pt too wide) in paragraph at lines 316--321
+[]$[]$ 
+ []
+
+LaTeX Font Info:    Calculating math sizes for size <8.5> on input line 326.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8.5> on input line 326.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5.94997> on input line 326.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <4.25> on input line 326.
+[7.7]
+Overfull \hbox (15.00002pt too wide) in paragraph at lines 328--337
+[]$[]$ 
+ []
+
+
+Overfull \hbox (15.00002pt too wide) in paragraph at lines 354--365
+[]$[]$ 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8.8]
+Overfull \hbox (15.00002pt too wide) in paragraph at lines 370--380
+[]$[]$ 
+ []
+
+
+Overfull \hbox (4.07004pt too wide) in paragraph at lines 381--382
+[][][][][][][][][][][][][][][][][][][][][][][][][][] \T1/lmr/m/n/10 (-20) or [][][][][][][][][][][][][][][][][][][][][][][][][][][][[]].
+ []
+
+
+Overfull \hbox (15.00002pt too wide) in paragraph at lines 383--391
+[]$[]$ 
+ []
+
+
+Overfull \hbox (15.00002pt too wide) in paragraph at lines 394--403
+[]$[]$ 
+ []
+
+[9.9] (./lipics-v2021-sample-article.bbl
+Underfull \hbox (badness 1231) in paragraph at lines 10--13
 []\T1/lmr/m/n/9 (+20) async - rust.  []$\T1/lmtt/m/n/9 https : / / doc . rust-[]lang . org / std / keyword . async . html$[]\T1/lmr/m/n/9 (+20) .  (Ac-cessed on
  []
 
 
-Underfull \hbox (badness 4378) in paragraph at lines 20--24
+Underfull \hbox (badness 4378) in paragraph at lines 26--30
 []\T1/lmr/m/n/9 (+20) Await ex-pres-sions - the rust ref-er-ence.  []$\T1/lmtt/m/n/9 https : / / doc . rust-[]lang . org / reference /
  []
 
-) [7.7] (./lipics-v2021-sample-article.aux)
+
+Underfull \hbox (badness 3029) in paragraph at lines 37--41
+[]\T1/lmr/m/n/9 (+20) Control.concurrent.async.  []$\T1/lmtt/m/n/9 https : / / hackage . haskell . org / package / async-[]2 . 2 . 4 / docs /
+ []
+
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 53.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)) [10.10] (./lipics-v2021-sample-article.aux)
 Package rerunfilecheck Info: File `lipics-v2021-sample-article.out' has not changed.
-(rerunfilecheck)             Checksum: 0589A58E712E8362D433B6216B6D8B7C;253.
+(rerunfilecheck)             Checksum: EE3B773AF99079781FBFA3F2082D1B01;344.
  ) 
 Here is how much of TeX's memory you used:
- 25195 strings out of 478023
- 438705 string characters out of 5838676
- 943097 words of memory out of 5000000
- 42998 multiletter control sequences out of 15000+600000
- 547098 words of font info for 155 fonts, out of 8000000 for 9000
+ 25927 strings out of 478023
+ 448550 string characters out of 5838676
+ 948406 words of memory out of 5000000
+ 43606 multiletter control sequences out of 15000+600000
+ 575024 words of font info for 205 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 87i,10n,91p,7949b,2342s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Free-Regular.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on lipics-v2021-sample-article.pdf (7 pages, 260906 bytes).
+ 87i,9n,91p,7949b,2342s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Free-Regular.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmri9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on lipics-v2021-sample-article.pdf (10 pages, 307184 bytes).
 PDF statistics:
- 254 PDF objects out of 1000 (max. 8388607)
- 222 compressed objects within 3 object streams
- 108 named destinations out of 1000 (max. 500000)
- 47129 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 364 PDF objects out of 1000 (max. 8388607)
+ 323 compressed objects within 4 object streams
+ 160 named destinations out of 1000 (max. 500000)
+ 63009 words of extra memory for PDF output out of 74296 (max. 10000000)
 

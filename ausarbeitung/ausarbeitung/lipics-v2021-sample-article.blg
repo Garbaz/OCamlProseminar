@@ -17,45 +17,48 @@ Warning--to sort, need author or key in Makingth23:online
 Warning--to sort, need author or key in tokioexe87:online
 Warning--to sort, need author or key in spawnint88:online
 Warning--to sort, need author or key in maininto61:online
-You've used 9 entries,
+Warning--to sort, need author or key in ControlC47:online
+Warning--to sort, need author or key in schedule78:online
+Warning--to sort, need author or key in 54UsingC70:online
+You've used 14 entries,
             2882 wiz_defined-function locations,
-            655 strings with 6247 characters,
-and the built_in function-call counts, 2384 in all, are:
-= -- 234
-> -- 18
-< -- 0
-+ -- 10
-- -- 0
-* -- 56
-:= -- 256
-add.period$ -- 27
-call.type$ -- 9
-change.case$ -- 27
+            683 strings with 7073 characters,
+and the built_in function-call counts, 4150 in all, are:
+= -- 420
+> -- 52
+< -- 2
++ -- 23
+- -- 8
+* -- 122
+:= -- 465
+add.period$ -- 43
+call.type$ -- 14
+change.case$ -- 46
 chr.to.int$ -- 0
-cite$ -- 18
-duplicate$ -- 63
-empty$ -- 334
-format.name$ -- 0
-if$ -- 730
+cite$ -- 26
+duplicate$ -- 118
+empty$ -- 541
+format.name$ -- 8
+if$ -- 1237
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 0
-newline$ -- 48
-num.names$ -- 0
-pop$ -- 135
+int.to.str$ -- 14
+missing$ -- 2
+newline$ -- 73
+num.names$ -- 4
+pop$ -- 200
 preamble$ -- 1
-purify$ -- 18
+purify$ -- 32
 quote$ -- 0
-skip$ -- 198
+skip$ -- 337
 stack$ -- 0
-substring$ -- 46
-swap$ -- 9
-text.length$ -- 0
+substring$ -- 109
+swap$ -- 25
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 36
-warning$ -- 9
-while$ -- 0
-width$ -- 10
-write$ -- 83
-(There were 9 warnings)
+type$ -- 56
+warning$ -- 12
+while$ -- 8
+width$ -- 16
+write$ -- 134
+(There were 12 warnings)

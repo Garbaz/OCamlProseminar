@@ -99,10 +99,10 @@ The other, generally aligned with the functional programming paradigm, is to ins
 
 While these two approaches look at the problem from different sides, in effect they result in the same semantic model: Bursts of computation delineated by waiting for external responses.
 
-\section{Ocaml}
+\section{OCaml}
 \label{sec:ocaml}
 
-While neither the OCaml compiler nor the standard library \verb|Base| provide any support for asynchronous computation, there are external libraries that introduce the functionality into the language. One is \verb|Async|, which comes with Jane Street's \verb|Core| library, another is \verb|Lwt|.
+While neither the OCaml compiler nor the standard library \lstinline{Base} provide any support for asynchronous computation, there are external libraries that introduce the functionality into the language. One is \lstinline{Async}, which comes with Jane Street's \lstinline{Core} library, another is \lstinline{Lwt}.
 
 \paragraph*{Async}
 
@@ -112,15 +112,15 @@ Async does not utilize system threads for concurrency, but rather implements it'
 
 \paragraph*{Deferred}
 
-For representing the potentially pending result of an asynchronous computation, Async provides a high-level monadic datatype \verb|Deferred.t|. With monadic composition, either using \verb|Deferred.bind| directly or some syntactic sugar for it, these asynchronous computations can be chained together.
+For representing the potentially pending result of an asynchronous computation, Async provides a high-level monadic datatype \lstinline{Deferred.t}. With monadic composition, either using \lstinline{Deferred.bind} directly or some syntactic sugar for it, these asynchronous computations can be chained together.
 
-For asynchronous computations to be executed, control has to be handed over to the Async scheduler using \verb|Scheduler.go|.
+For asynchronous computations to be executed, control has to be handed over to the Async scheduler using \lstinline{Scheduler.go}.
 
 \paragraph*{Ivar \& upon}
 
-While \verb|Deferred| provides a high-level way to compose existing asynchronous operations, to implement asynchronous operations from scratch, a low-level interface is provided via \verb|Ivar| and \verb|upon|.
+While \lstinline{Deferred} provides a high-level way to compose existing asynchronous operations, to implement asynchronous operations from scratch, a low-level interface is provided via \lstinline{Ivar} and \lstinline{upon}.
 
-An \verb|Ivar.t| is a variable which represents the actual value behind a Deferred, which can be manually filled at any time, prompting the Deferred to become determined. How and when the Ivar is filled can be arbitrary implemented, allowing for custom asynchronous operations. For this purpose, there also is a function \verb|upon| provided, which allows for scheduling arbitrary non-asynchronous code to be executed once a certain Deferred becomes determined.
+An \lstinline{Ivar.t} is a variable which represents the actual value behind a Deferred, which can be manually filled at any time, prompting the Deferred to become determined. How and when the Ivar is filled can be arbitrary implemented, allowing for custom asynchronous operations. For this purpose, there also is a function \lstinline{upon} provided, which allows for scheduling arbitrary non-asynchronous code to be executed once a certain Deferred becomes determined.
 
 As an example \cite{Concurre6:online}:
 
@@ -146,9 +146,9 @@ end;;
 \end{lstlisting}
 \end{minipage}
 
-This somewhat artificially conceived utility allows for scheduling some asynchronous operations to be executed in order, but after some predefined delay of time. Here, an Ivar is used to back the Deferred that is returned from the \verb|schedule| function. This Ivar is filled once, first, the artificial delay has elapsed (\verb|upon (after t.delay) (...)|), and then, the actual asynchronous operation that has been scheduled has become determined (\verb|upon (thunk ()) (...)|).
+This somewhat artificially conceived utility allows for scheduling some asynchronous operations to be executed in order, but after some predefined delay of time. Here, an Ivar is used to back the Deferred that is returned from the \lstinline{schedule} function. This Ivar is filled once, first, the artificial delay has elapsed (\lstinline{upon (after t.delay) (...)}), and then, the actual asynchronous operation that has been scheduled has become determined (\lstinline{upon (thunk ()) (...)}).
 
-The monadic bind operator used to compose asynchronous operations can very simply be implemented utilizing IVar and \verb|upon| \cite{Concurre6:online}:
+The monadic bind operator used to compose asynchronous operations can very simply be implemented utilizing IVar and \lstinline{upon} \cite{Concurre6:online}:
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=Caml,caption={Implementation of bind},captionpos=t]
@@ -179,9 +179,9 @@ pub trait Future {
 
 Provided as a trait by the Rust standard library, a Future represents an asynchronous computation that either is done, providing a final result value of the computation, or is still pending, needing to make further progress.
 
-To invoke progress to be made on a Future, it has to be polled, which can either result in the Future completing it's computation, returning the final value, or in it suspending it's computation, ensuring by some way for the wakeup function that is passed in via the calling context \verb|cx| to be called once the Future is ready to be polled again for further progress.
+To invoke progress to be made on a Future, it has to be polled, which can either result in the Future completing it's computation, returning the final value, or in it suspending it's computation, ensuring by some way for the wakeup function that is passed in via the calling context \lstinline{cx} to be called once the Future is ready to be polled again for further progress.
 
-Any \verb|struct| implementing Future therefore has to define in it's \verb|poll| both what computation is to be done to further it's progress in computing it's final value, and, if not complete, by what means the wakeup callback is to be called back to signify to the runtime that the Future can be polled again.
+Any \lstinline{struct} implementing Future therefore has to define in it's \lstinline{poll} both what computation is to be done to further it's progress in computing it's final value, and, if not complete, by what means the wakeup callback is to be called back to signify to the runtime that the Future can be polled again.
 
 When and how any Future is polled is not defined by the Rust compiler or standard library, but instead rather can be handled differently by different external runtimes.
 
@@ -191,9 +191,9 @@ To simplify declaration and composition of asynchronous tasks, the Rust compiler
 
 \paragraph*{Async \& Await}
 
-Manually constructing the necessary \verb|struct| and implementing \verb|Future| for it for every piece of asynchronous code is tedious, error prone and redundant. Therefore, the Rust compiler provides a way to declare async functions, closures and code blocks using the special keyword \verb|async|, from which during compilation the necessary implementation of \verb|Future| is generated \cite{asyncRus3:online}.
+Manually constructing the necessary \lstinline{struct} and implementing \lstinline{Future} for it for every piece of asynchronous code is tedious, error prone and redundant. Therefore, the Rust compiler provides a way to declare async functions, closures and code blocks using the special keyword \lstinline{async}, from which during compilation the necessary implementation of \lstinline{Future} is generated \cite{asyncRus3:online}.
 
-Similarly, instead of manually dealing with contexts and polling a Future directly, a keyword \verb|await| is provided by the Rust compiler to wait for a Future to conclude and extract it's resulting value \cite{Awaitexp35:online}.
+Similarly, instead of manually dealing with contexts and polling a Future directly, a keyword \lstinline{await} is provided by the Rust compiler to wait for a Future to conclude and extract it's resulting value \cite{Awaitexp35:online}.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=Rust,caption={Example for async \& await},captionpos=t]
@@ -208,13 +208,13 @@ fn bar() -> impl Future<Output = u8> {
 \end{lstlisting}
 \end{minipage}
 
-The code inside the async function, closure or code block will become the computation that is to be done to further the computation of the Future it compiles to, wherein any \verb|await| will become a point from which computation will be resumed when the asynchronous task that is being awaited concludes. For this, any data necessary to continue further computation will be stored in the implicitly generated struct that represents our Future.
+The code inside the async function, closure or code block will become the computation that is to be done to further the computation of the Future it compiles to, wherein any \lstinline{await} will become a point from which computation will be resumed when the asynchronous task that is being awaited concludes. For this, any data necessary to continue further computation will be stored in the implicitly generated struct that represents our Future.
 
-This combination of \verb|async| and \verb|await| allows us write and compose asynchronous functions, closures and code blocks in a simple and general, runtime-independent manner.
+This combination of \lstinline{async} and \lstinline{await} allows us write and compose asynchronous functions, closures and code blocks in a simple and general, runtime-independent manner.
 
 \paragraph*{Join}
 
-While we can dispatch and wait for a single asynchronous task with \verb|await|, if we want to dispatch multiple asynchronous tasks at once, awaiting each in turn will not suffice, since the execution of the calling async context will be suspended with the first \verb|await|, therefore resulting in the second asynchronous task to be initiated only once the first one has concluded, \&c. This means, that the asynchronous tasks will not be dispatched simultaneously, but rather each in sequence, unnecessarily leaving performance that could be gained with an asynchronous execution model on the table.
+While we can dispatch and wait for a single asynchronous task with \lstinline{await}, if we want to dispatch multiple asynchronous tasks at once, awaiting each in turn will not suffice, since the execution of the calling async context will be suspended with the first \lstinline{await}, therefore resulting in the second asynchronous task to be initiated only once the first one has concluded, \&c. This means, that the asynchronous tasks will not be dispatched simultaneously, but rather each in sequence, unnecessarily leaving performance that could be gained with an asynchronous execution model on the table.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=Rust,caption={Sequential await},captionpos=t]
@@ -245,7 +245,7 @@ async fn in_sequence() {
 
 \paragraph*{Runtime}
 
-The Rust standard library does not provide an async runtime, meaning that while we can readily declare and compose async functions, we can not actually execute any asynchronous code without the use of an external runtime. Neither does the standard library provide asynchronous versions of IO/network/file/\&c utilities. Instead, other than the basic interface described above of \verb|Future|, \verb|async| and \verb|await|, all further asynchronous functionality is implemented by external libraries \cite{TheAsync92:online}. Of these, Tokio is by far the most popular, and commonly considered the default choice for the majority of use cases \cite{AsyncRus83:online}.
+The Rust standard library does not provide an async runtime, meaning that while we can readily declare and compose async functions, we can not actually execute any asynchronous code without the use of an external runtime. Neither does the standard library provide asynchronous versions of IO/network/file/\&c utilities. Instead, other than the basic interface described above of \lstinline{Future}, \lstinline{async} and \lstinline{await}, all further asynchronous functionality is implemented by external libraries \cite{TheAsync92:online}. Of these, Tokio is by far the most popular, and commonly considered the default choice for the majority of use cases \cite{AsyncRus83:online}.
 
 \paragraph*{Tokio}
 
@@ -287,10 +287,123 @@ async fn main() -> io::Result<()> {
 \end{lstlisting}
 \end{minipage}
 
-With the asynchronous version of \verb|TcpListener| provided by Tokio, the program waits asynchronously for incoming connections and spawns a new asynchronous task for each connected client without blocking the main task.
+With the asynchronous version of \lstinline{TcpListener} provided by Tokio, the program waits asynchronously for incoming connections and spawns a new asynchronous task for each connected client without blocking the main task.
 
-Notably, the \verb|#[tokio::main]| attribute makes it such that when the \verb|main| function is called (i.e. at the start of the program), a Tokio runtime is created and started, without requiring so to be done manually \cite{maininto61:online}.
+Notably, the \lstinline{#[tokio::main]} attribute makes it such that when the \lstinline{main} function is called (i.e. at the start of the program), a Tokio runtime is created and started, without requiring so to be done manually \cite{maininto61:online}.
 
+\section{Haskell}
+\label{sec:haskell}
+
+All side-effecting computation in Haskell is represented with the monad \newline\lstinline{type IO a = World -> (a, World)}, where \lstinline{World} stands for a theoretical type that represents the entirety of the persistent outside world to our program\cite{jones2001monadic}. A value of this monad therefore stands for an action that transforms the current state of the world in some way (e.g. write to a file) and produces some internal result of type \lstinline{a} (e.g. the result of reading a file). These actions can be sequentially composed with the monad operators \lstinline{>>= :: IO a -> (a -> IO b) -> IO b} and the \lstinline{>> :: IO a -> IO b -> IO b}.
+
+For an action represented by the IO monad to be actually executed and the side-effects they represent to occur, we assign this action to the special label \lstinline{main :: IO ()}. E.g.:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Haskell,caption={The main function in Haskell},captionpos=t]
+main :: IO ()
+main = getLine >>= \l -> putStr l
+\end{lstlisting}
+\end{minipage}
+
+Here \lstinline{getLine :: IO String} and \lstinline{putStr :: String -> IO ()} are IO actions provided by the standard library, which in turn are implemented with simpler IO actions, down to a set of primitive IO actions that actually have to interact with Haskell-external non-pure systems, e.g. the kernel.
+
+Notably this representation of side-effects through the chaining of IO actions deliberately considers the world and our actions upon it as strictly sequential. While there is no guarantee what effects our actions will have, it is guaranteed by Haskell that these actions happen in exactly the order specified. This is generally desired and a necessary distinction from normal lazy evaluation in Haskell, providing us the ability to declare needed precedence between our actions for correct interaction with the outside world (e.g. we can't receive a response before sending a query). However this strict ordering is fundamentally incompatible with concurrency, where we would explicitly like for actions to possibly happen in independent arbitrary order to facilitate asynchronous computation.
+
+\paragraph*{Concurrent Haskell}
+
+For this, an extension to both the language of Haskell and in turn the semantics of \lstinline{IO} is provided with \lstinline{forkIO :: IO () -> IO ThreadId}\cite{jones1996concurrent}. \lstinline{forkIO} takes an IO action and causes it to be executed concurrently to the parent thread from which it was called. Importantly, this means that whatever IO action is passed to \lstinline{forkIO} will no longer be executed in the ordered specified by the chain of IO actions of the parent thread. Any subsequent IO actions performed by the parent thread will be arbitrarily interleaved with IO actions performed by the child thread. The ordering of IO actions is only guaranteed internal to each thread respectively. For example:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Haskell,caption={Two threads running forever in parallel},captionpos=t]
+forkIO (forever (putChar '1')) >> forever (putChar '0')
+\end{lstlisting}
+\end{minipage}
+
+This will print an arbitrary mix of 0s and 1s to the output, with no determined order to them.
+
+\paragraph*{Cross-thread communication with MVar}
+
+While \lstinline{forkIO} allows to spawn a child thread to do IO actions on it's own, once forked, there is no way for the parent thread and child thread to communicate, neither can any two child thread communicate with each other\footnote{In GHC, forkIO returns a \lstinline{ThreadId}, with which the thread can be killed from the parent thread with \lstinline{killThread :: ThreadId -> IO ()}, which could be considered a form of communication.}. This is remedied by the introduction of \lstinline{data MVar a}, a possibly empty mutable location that is safely synchronized between threads\cite{jones1996concurrent}. A \lstinline{MVar} is created with \lstinline{newEmptyMVar :: IO (MVar a)} or \lstinline{newMVar :: a -> IO (MVar a)}, can be written to with \lstinline{putMVar :: MVar a -> a -> IO ()} and read from with \lstinline{takeMVar :: MVar a -> IO a}\cite{jones1996concurrent}. These latter two operations each block, \lstinline{putMVar} waiting for the \lstinline{MVar} to become empty, before writing to it, leaving it full, and \lstinline{takeMVar} waiting for the \lstinline{MVar} to become filled before reading it, leaving it empty\footnote{In the original definition of Concurrent Haskell, \lstinline{putMVar} did not block if the MVar is already full, but rather resulted in a program error. This however is changed in the present day GHC implementation.\cite{jones2001monadic}}. E.g.:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Haskell,caption={Using an MVar to hand a result back to the parent thread},captionpos=t]
+do
+  v <- newEmptyMVar
+  forkIO (threadDelay 1000000 >> putMVar v "momentous result")
+  m <- takeMVar v
+  print m
+\end{lstlisting}
+\end{minipage}
+
+This will cause the parent thread to wait for the child thread to fill \lstinline{v}, before printing the result that has been handed back to it.
+
+\paragraph*{Async in Haskell}
+
+While \lstinline{forkIO} provides a very general way for concurrent execution in Haskell, it has, as perhaps noticeable above, three properties that we would like to abstract over for asynchronous computation.
+
+The first being, that the IO action we are forking does not have any result, the argument to \lstinline{forkIO} being of type \lstinline{IO ()}. Instead, to hand back a possible result to our parent thread, we have to manually create an \lstinline{MVar} in the parent thread and capture it in the forked IO action for the child to be able to hand back a result. 
+
+The second being that the child thread can silently crash with an exception and leave our parent thread running none the wiser\cite{ControlC47:online}.
+
+And the third being that, once spawned, our child thread might run indefinitely, even after our parent thread is gone, since it's execution becomes entirely independent of the parent\cite{ControlC47:online}.
+
+All of these concerns are alleviated by the thin abstraction over Concurrent Haskell provided by the package \lstinline{async}.
+
+An asynchronous thread is forked from the parent thread with \newline\lstinline{async :: IO a -> IO (Async a)}, and the parent thread can wait for the child thread to conclude it's computation with \lstinline{wait :: Async a -> IO a}\cite{ControlC47:online}. If an exception occurs in the child thread, \lstinline{wait} will cause this exception to be re-thrown in the parent thread, preventing silently unhandled exceptions. E.g.:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Haskell,caption={Fetching two pages asynchronously and waiting for both results},captionpos=t]
+do
+  a1 <- async (getURL url1)
+  a2 <- async (getURL url2)
+  page1 <- wait a1
+  page2 <- wait a2
+  print page1
+  print page2
+\end{lstlisting}
+\end{minipage}
+
+Notably, the child thread executing the IO action handed to \lstinline{async} will be started right away, and not just when awaited. Therefore, waiting first for \lstinline{a1} and then \lstinline{a2}, contrary to e.g. \lstinline{await} in Rust or \lstinline{Deferred.bind} in OCaml, does not result in the execution of the second asynchronous operation to be delayed until the first concludes, but rather they will be truly executed concurrently, even when awaited sequentially.
+
+Unfortunately this also means that, while we have fulfilled both the first and second wish above, if used in this style, the third issue is still standing; Any child threads will keep running, even if the parent thread dies, since the execution of the child thread does not depend on the parent thread to be waiting for it\cite{ControlC47:online}. This usually is unwanted. Therefore, the function \lstinline{withAsync :: IO a -> (Async a -> IO b) -> IO b} is provided, which will asynchronously run the given IO action and hand the \lstinline{Async} into the given function, while also keeping track of the child thread that has been forked off, and cancelling it when the given function returns or throws an exception, ensuring that no orphaned child thread is left running. E.g.:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Haskell,caption={Using withAsync to prevent orphaned threads},captionpos=t]
+withAsync (getURL url1) $ \a1 -> do
+  withAsync (getURL url2) $ \a2 -> do
+    page1 <- wait a1
+    page2 <- wait a2
+    print page1
+    print page2
+\end{lstlisting}
+\end{minipage}
+
+Abstracting again over \lstinline{withAsync}, a few high-level utilities are provided, like \newline\lstinline{concurrently :: IO a -> IO b -> IO (a, b)} or \lstinline{race :: IO a -> IO b -> IO (Either a b)}\cite{ControlC47:online}. Using \lstinline{concurrently}, the above example can be rewritten as:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Haskell,caption={Simplifying the example with concurrently},captionpos=t]
+do
+  (page1, page2) <- concurrently (getURL url1) (getURL url2)
+  print page1
+  print page2
+\end{lstlisting}
+\end{minipage}
+
+\lstinline{race} provides the possibility not to wait for both of two asynchronous operations to conclude, but rather to wait for either to conclude and the other to subsequently be canceled. E.g.:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Haskell,caption={Racing two fetches and printing whichever responds first},captionpos=t]
+do
+  r <- race (getURL url1) (getURL url2)
+  case r of
+    Left page -> print page
+    Right page -> print page
+\end{lstlisting}
+\end{minipage}
+
+\paragraph*{Runtime}
+
+In the Glasgow Haskell Compiler (GHC), concurrent threads are represented by as system of internal lightweight threads which are preemptively scheduled by a custom scheduler\cite{schedule78:online}. By default, this occurs entirely on one system thread, but an option is provided for utilizing multiple CPU cores via SMP parallelism\cite{54UsingC70:online}.
 
 %
 % Bibliography
